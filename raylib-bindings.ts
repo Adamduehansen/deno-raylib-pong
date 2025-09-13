@@ -75,6 +75,10 @@ const raylib = Deno.dlopen("./libraylib.so.5.5.0", {
     parameters: [Camera2DStruct],
     result: "void",
   },
+  CheckCollisionRecs: {
+    parameters: [RectangleStruct, RectangleStruct],
+    result: "bool",
+  },
   Clamp: {
     parameters: ["f32", "f32", "f32"],
     result: "f32",
@@ -289,6 +293,10 @@ function toCamera2DArray(camera: Camera): BufferSource {
   ]);
 }
 
+function toRaylibRectangle(rec: Rectangle): BufferSource {
+  return new Float32Array([rec.x, rec.y, rec.width, rec.height]);
+}
+
 function toFloat32Array(arr: number[]): BufferSource {
   return new Float32Array(arr);
 }
@@ -431,6 +439,15 @@ export function beginDrawing(): void {
 
 export function endDrawing(): void {
   raylib.symbols.EndDrawing();
+}
+
+// Basic shapes collision detection functions
+// ----------------------------------------------------------------------------
+export function checkCollisionRecs(rec1: Rectangle, rec2: Rectangle): boolean {
+  return raylib.symbols.CheckCollisionRecs(
+    toRaylibRectangle(rec1),
+    toRaylibRectangle(rec2),
+  );
 }
 
 // Basic shapes drawing functions
