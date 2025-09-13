@@ -150,12 +150,11 @@ export class Ball extends Entity {
       height: PaddleHeight,
     };
 
-    if (checkCollisionRecs(ballRec, playerPaddleRec)) {
-      console.log("Collision with player!");
-    }
-
-    if (checkCollisionRecs(ballRec, cpuPaddleRec)) {
-      console.log("Collision with cpu!");
+    if (
+      checkCollisionRecs(ballRec, playerPaddleRec) ||
+      checkCollisionRecs(ballRec, cpuPaddleRec)
+    ) {
+      this.speedX *= -1;
     }
 
     const time = getFrameTime();
