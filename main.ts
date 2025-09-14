@@ -5,6 +5,8 @@ import {
   clearBackground,
   closeWindow,
   drawRectangleRec,
+  drawText,
+  drawTextEx,
   endDrawing,
   getFrameTime,
   getScreenHeight,
@@ -13,6 +15,7 @@ import {
   isKeyDown,
   KeyS,
   KeyW,
+  measureText,
   RayWhite,
   Rectangle,
   setTargetFPS,
@@ -173,6 +176,9 @@ export class Ball extends Entity {
 }
 
 if (import.meta.main) {
+  const playerScore = 0;
+  const cpuScore = 0;
+
   initWindow({
     title: "Deno Raylib Ping Pong",
     width: 800,
@@ -215,6 +221,20 @@ if (import.meta.main) {
     for (const entity of entities) {
       entity.render();
     }
+    drawText({
+      text: cpuScore.toString(),
+      color: RayWhite,
+      fontSize: 32,
+      posX: 10,
+      posY: 10,
+    });
+    drawText({
+      text: playerScore.toString(),
+      color: RayWhite,
+      fontSize: 32,
+      posX: getScreenWidth() - measureText(playerScore.toString(), 32) - 10,
+      posY: 10,
+    });
     endDrawing();
   }
 

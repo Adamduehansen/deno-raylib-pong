@@ -231,6 +231,10 @@ const raylib = Deno.dlopen("./libraylib.so.5.5.0", {
     parameters: ["i16"],
     result: "bool",
   },
+  MeasureText: {
+    parameters: ["buffer", "i32"],
+    result: "i32",
+  },
   rlPushMatrix: {
     parameters: [],
     result: "void",
@@ -757,6 +761,12 @@ export function getFontDefault(): Font {
     recs: font[4],
     glyphs: font[5],
   };
+}
+
+// Text font info functions
+// ----------------------------------------------------------------------------
+export function measureText(str: string, fontSize: number): number {
+  return raylib.symbols.MeasureText(toCString(str), fontSize);
 }
 
 // RLGH
