@@ -6,7 +6,6 @@ import {
   closeWindow,
   drawRectangleRec,
   drawText,
-  drawTextEx,
   endDrawing,
   getFrameTime,
   getScreenHeight,
@@ -21,6 +20,9 @@ import {
   setTargetFPS,
   windowShouldClose,
 } from "./raylib-bindings.ts";
+
+let playerScore = 0;
+let cpuScore = 0;
 
 export abstract class Entity {
   x = 0;
@@ -128,8 +130,14 @@ export class Ball extends Entity {
       this.speedY *= -1;
     }
 
-    if (this.x > getScreenWidth() - BallSize || this.x < 0) {
-      this.speedX *= -1;
+    if (this.x > getScreenWidth() - BallSize) {
+      cpuScore += 1;
+      this.reset();
+    }
+
+    if (this.x < 0) {
+      playerScore += 1;
+      this.reset();
     }
 
     const ballRec: Rectangle = {
@@ -173,12 +181,16 @@ export class Ball extends Entity {
       width: BallSize,
     }, RayWhite);
   }
+
+  private reset(): void {
+    this.x = getScreenWidth() / 2 - BallSize / 2;
+    this.y = getScreenHeight() / 2 - BallSize / 2;
+    this.speedX = Math.floor(Math.random() * 2) === 0 ? BallSpeed : -BallSpeed;
+    this.speedY = Math.floor(Math.random() * 2) === 0 ? BallSpeed : -BallSpeed;
+  }
 }
 
 if (import.meta.main) {
-  const playerScore = 0;
-  const cpuScore = 0;
-
   initWindow({
     title: "Deno Raylib Ping Pong",
     width: 800,
